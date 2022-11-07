@@ -1,0 +1,48 @@
+name: napari-train-cellpose
+display_name: Tool for Image Annotation and Training Cellpose
+contributions:
+  commands:
+    - id: napari-train-cellpose.get_reader
+      python_name: napari_train_cellpose._reader:napari_get_reader
+      title: Open data with Tool for Image Annotation and Training Cellpose
+    - id: napari-train-cellpose.write_multiple
+      python_name: napari_train_cellpose._writer:write_multiple
+      title: Save multi-layer data with Tool for Image Annotation and Training Cellpose
+    - id: napari-train-cellpose.write_single_image
+      python_name: napari_train_cellpose._writer:write_single_image
+      title: Save image data with Tool for Image Annotation and Training Cellpose
+    - id: napari-train-cellpose.make_sample_data
+      python_name: napari_train_cellpose._sample_data:make_sample_data
+      title: Load sample data from Tool for Image Annotation and Training Cellpose
+    - id: napari-train-cellpose.make_qwidget
+      python_name: napari_train_cellpose._widget:ExampleQWidget
+      title: Make example QWidget
+    - id: napari-train-cellpose.make_magic_widget
+      python_name: napari_train_cellpose._widget:example_magic_widget
+      title: Make example magic widget
+    - id: napari-train-cellpose.make_func_widget
+      python_name: napari_train_cellpose._widget:example_function_widget
+      title: Make example function widget
+  readers:
+    - command: napari-train-cellpose.get_reader
+      accepts_directories: false
+      filename_patterns: ['*.npy']
+  writers:
+    - command: napari-train-cellpose.write_multiple
+      layer_types: ['image*','labels*']
+      filename_extensions: []
+    - command: napari-train-cellpose.write_single_image
+      layer_types: ['image']
+      filename_extensions: ['.npy']
+  sample_data:
+    - command: napari-train-cellpose.make_sample_data
+      display_name: Tool for Image Annotation and Training Cellpose
+      key: unique_id.1
+  widgets:
+    - command: napari-train-cellpose.make_qwidget
+      display_name: Example QWidget
+    - command: napari-train-cellpose.make_magic_widget
+      display_name: Example Magic Widget
+    - command: napari-train-cellpose.make_func_widget
+      autogenerate: true
+      display_name: Example Function Widget
