@@ -1,6 +1,7 @@
 import os
 import pathlib
 import subprocess
+from shutil import copyfile
 from typing import Union
 
 import yaml
@@ -52,6 +53,7 @@ class Param:
         config_name: str = "config.yml",
         update_git_revision: bool = False,
         dump_configuration: bool = True,
+        backup_previous_config: bool = True,
     ):
         """
         :param config_path: Path of the config file or of the folder
@@ -68,6 +70,11 @@ class Param:
         # Initial setup:
         try:
             self.read_config_file()
+            # If the file already existed and was loaded, create a backup:
+            if backup_previous_config:
+                basename, extension = os.path.splitext(self.config_path)
+                path_backup_config = basename + "_BAK" + extension
+                copyfile(self.config_path, path_backup_config)
         except FileNotFoundError:
             # No config file found, experiment._config remains an empty dict.
             pass

@@ -3,7 +3,7 @@ import os.path
 import pytest
 import yaml
 
-from napari_train_cellpose.parameters import Param
+from napari_train_cellpose.parameters.parameters import Param
 
 
 @pytest.fixture
@@ -23,7 +23,9 @@ def some_param(tmp_path, some_config_dict):
     existing_config_path = os.path.join(tmp_path, config_filename)
     with open(existing_config_path, "w") as f:
         yaml.dump(some_config_dict, f)
-    return Param(tmp_path, config_name=config_filename)
+    return Param(
+        tmp_path, config_name=config_filename, backup_previous_config=True
+    )
 
 
 def test_create_empty_param(tmp_path):
@@ -54,6 +56,13 @@ def test_create_empty_param_with_git_rev(tmp_path):
         loader = yaml.Loader
         saved_config = yaml.load(f, loader)
         assert saved_config["git_rev"] is not None
+
+
+def test_load_and_backup_previous_config(some_param):
+    # Assert that the config has been backed up:
+    basename, extension = os.path.splitext(some_param.config_path)
+    path_backup_config = basename + "_BAK" + extension
+    assert os.path.isfile(path_backup_config)
 
 
 def test_create_with_inherited_configs(tmp_path, some_param, some_config_dict):
